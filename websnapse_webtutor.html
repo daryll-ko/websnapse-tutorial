@@ -1,0 +1,662 @@
+<!DOCTYPE html> 
+<html lang='en-US' xml:lang='en-US'> 
+<head><title>WebSnapse Tutorial</title> 
+<meta charset='utf-8' /> 
+<meta content='TeX4ht (https://tug.org/tex4ht/)' name='generator' /> 
+<meta content='width=device-width,initial-scale=1' name='viewport' /> 
+<link href='websnapse_webtutor.css' rel='stylesheet' type='text/css' /> 
+<meta content='websnapse_webtutor.tex' name='src' /> 
+<script>window.MathJax = { tex: { tags: "ams", }, }; </script> 
+ <script async='async' id='MathJax-script' src='https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js' type='text/javascript'></script>  
+</head><body>
+   <div class='maketitle'>
+                                                                  
+
+                                                                  
+                                                                  
+
+                                                                  
+
+<h2 class='titleHead'>WebSnapse Tutorial</h2>
+<div class='author'><span class='ecrm-1200'>Daryll Ko</span>\(^1\)<span class='ecrm-1200'>, Francis George C. Cabarle</span>\(^{1,2}\)<span class='ecrm-1200'>, Ren Tristan A. De La Cruz</span>\(^1\)</div><br />
+<div class='date'><span class='ecrm-1200'>February 12, 2024</span></div>
+   </div>
+<div class='center'>
+<!-- l. 24 --><p class='noindent'>
+</p><!-- l. 25 --><p class='noindent'>\(^1\)Dept. of Computer Science, University of the Philippines Diliman,<br />
+Quezon city, Philippines, 1101<br />
+E-mail: {dlko,fccabarle,radelacruz}@up.edu.ph<br />
+\(^2\)Research Group on Natural Computing,<br />
+Department of Computer Science and Artificial Intelligence,<br />
+I3US, SCORE lab,<br />
+Universidad de Sevilla, Avda. Reina Mercedes s/n, 41012, Sevilla, Spain<br />
+E-mail: fcabarle@us.es<br />
+</p>
+</div>
+   <h3 class='sectionHead' id='introduction'><span class='titlemark'>1   </span> <a id='x1-10001'></a>Introduction</h3>
+<!-- l. 39 --><p class='noindent'>The origin of WebSnapse comes from the Snapse simulator <span class='cite'>[<a href='#XSnapse'>1</a>]</span> with the following
+<span class='ecti-1000'>raison d’être</span>: an easy to use and visual simulator for learning about SN P systems.
+The simulator WebSnapse v1 (that is, version 1) improves on this “reason for being”
+by allowing users to access the software by using only their web browser,
+including more animations and features <span class='cite'>[<a href='#Xdupaya2022web'>2</a>]</span>. Unlike Snapse which requires specific
+installation depending on the device or operating system, WebSnapse is
+immediately accessible for many devices (including portable ones) and operating
+systems through their web browsers such as Firefox, Chrome, Safari. Further
+improvements were introduced in WebSnapse v2 <span class='cite'>[<a href='#Xwebnsnapse_v2'>3</a>]</span>, and finally for the present
+tutorial, the current versions of the simulator available at the WebSnapse
+page <span class='cite'>[<a href='#Xwebsnapse_page'>4</a>]</span>. The interested reader is invited to read the cited works on Snapse
+and WebSnapse, with links to the simulators, their source codes, etc. at
+                                                                  
+
+                                                                  
+<span class='cite'>[<a href='#Xwebsnapse_page'>4</a>]</span>.
+</p><!-- l. 44 --><p class='indent'>   The present work is organised as follows: we briefly recall the definition of SN P
+systems (Section <a href='#preliminaries'>2<!-- tex4ht:ref: sec:prelim  --></a>. In Section <a href='#tutorial'>3<!-- tex4ht:ref: sec:tutor  --></a> we begin the tutorial to the WebSnapse software,
+focused on its current version. The tutorial involves going through the process of
+creating an SN P system in detail using WebSnapse. A revised and extended version
+of the present tutorial is in <span class='cite'>[<a href='#Xwebsnapse_tutor2023'>5</a>]</span>.
+</p><!-- l. 51 --><p class='noindent'>
+</p>
+   <h3 class='sectionHead' id='preliminaries'><span class='titlemark'>2   </span> <a id='x1-20002'></a>Preliminaries</h3>
+<!-- l. 53 --><p class='noindent'>A <span class='ecbx-1000'>Spiking Neural P (SN P) system </span>from <span class='cite'>[<a href='#Xsnp'>6</a>]</span> is a tuple \[\Pi = (\{a\}, \sigma _{1}, \sigma _{2}, \dots , \sigma _{n}, syn, in, out),\] where:
+</p>
+     <ul class='itemize1'>
+     <li class='itemize'>\(\{a\}\) is the <span class='ecti-1000'>alphabet </span>used by the system, and \(a\) is the <span class='ecti-1000'>spike </span>symbol.
+     </li>
+     <li class='itemize'>
+     <!-- l. 57 --><p class='noindent'>\(\sigma _{i} = (n_{i}, R_{i})\) is the \(i^{th}\) <span class='ecti-1000'>neuron</span>: </p>
+         <ul class='itemize2'>
+         <li class='itemize'>\(n_{i}\) is the number of spikes contained in the neuron.
+         </li>
+         <li class='itemize'>\(R_{i}\) is the set of rules contained in the neuron. A rule is of the form \[E / a^{c} \rightarrow a^{p}; d,\]
+         where \(E\) is a regular expression over \(\{a\}\), \(c \ge p \ge 0\), \(c \ge 1\), and \(d \ge 0\). A <span class='ecti-1000'>minor modification</span>
+         in the usual way of writing rules in the same (neuron) rule set: we
+         separate rules within the same rule set using vertical bars instead of
+         commas; for instance we write \[\{a \rightarrow a; 1 \mid a \rightarrow \lambda \}\] instead of \[\{a \rightarrow a; 1, a \rightarrow \lambda \}.\]</li></ul>
+     </li>
+     <li class='itemize'>\(syn \subseteq \{1, 2, \dots , n\}^{2}\) is the set of <span class='ecti-1000'>synapses</span>, with \((i, i) \notin syn\) for \(1 \le i \le n\).
+     </li>
+     <li class='itemize'>\(in\) and \(out\) are the sets of <span class='ecti-1000'>input neurons </span>and <span class='ecti-1000'>output neurons</span>, respectively.</li></ul>
+<!-- l. 67 --><p class='indent'>   The present tutorial assumes some familiarity of the basics (i.e., syntax,
+semantics) of SN P systems, such as the chapter dedicated to SN P systems in the
+handbook in <span class='cite'>[<a href='#Xmem-hand'>7</a>]</span>, the tutorial in <span class='cite'>[<a href='#Xpaun2007snptutor'>8</a>]</span>, or a recent survey in <span class='cite'>[<a href='#Xleporati2022snpsurv'>9</a>]</span>.
+                                                                  
+
+                                                                  
+</p><!-- l. 69 --><p class='noindent'>
+</p>
+   <h3 class='sectionHead' id='tutorial'><span class='titlemark'>3   </span> <a id='x1-30003'></a>Tutorial</h3>
+<!-- l. 71 --><p class='noindent'>To demonstrate the simulation of SN P systems, we will create a <span class='ecti-1000'>greater-than-1
+</span><span class='ecti-1000'>positive integer generator </span>\(\Pi _{\ge 2}\), an SN P system that generates the set \(\{k \mid k \in \mathbb {Z}, k \ge 2\}\).
+</p><!-- l. 73 --><p class='indent'>   Formally, we have \[\Pi _{\ge 2} = (\{a\}, \sigma _{1}, \sigma _{2}, \sigma _{3}, syn, in, out),\] where:
+</p>
+     <ul class='itemize1'>
+     <li class='itemize'>\(\sigma _{1} = (2, \{a^{2}/a \rightarrow a; 0 \mid a \rightarrow \lambda \})\)
+     </li>
+     <li class='itemize'>\(\sigma _{2} = (1, \{a \rightarrow a; 0 \mid a \rightarrow a; 1\})\)
+     </li>
+     <li class='itemize'>\(\sigma _{3} = (3, \{a^{3} \rightarrow a; 0 \mid a \rightarrow a; 1 \mid a^{2} \rightarrow \lambda \})\)
+     </li>
+     <li class='itemize'>\(in = \emptyset \)
+     </li>
+     <li class='itemize'>\(out = \{\sigma _{3}\}\)</li></ul>
+<!-- l. 83 --><p class='indent'>   We consider two simulators developed at the Algorithms &amp; Complexity Lab from
+the University of the Philippines Diliman:
+</p>
+     <ul class='itemize1'>
+     <li class='itemize'><span class='ecbx-1000'>WebSnapse v3 </span>makes use of code that compiles to <span class='ecti-1000'>WebAssembly </span>in order
+     to efficiently carry out the computations involved when simulating SN P
+     systems <span class='cite'>[<a href='#Xwebsnapse-v3'>10</a>]</span>.
+     </li>
+     <li class='itemize'><span class='ecbx-1000'>WebSnapse Reloaded </span>separates the simulator into a <span class='ecti-1000'>client side </span>and
+     a <span class='ecti-1000'>server side</span>, allowing the user to use separate computers to handle the
+     displaying and simulation of SN P systems <span class='cite'>[<a href='#Xgulapa2023reloaded'>11</a>]</span>. In this way WebSnapse
+     Reloaded is also known as <span class='ecbx-1000'>WebSnapse CS</span>, for <span class='ecti-1000'>client-server</span>.</li></ul>
+                                                                  
+
+                                                                  
+<!-- l. 90 --><p class='indent'>   For the present tutorial we use <span class='ecbx-1000'>WebSnapse Reloaded</span>, as it provides a richer set
+of features and a more user-friendly interface. The ideas from using WebSnapse
+Reloaded are transferrable to WebSnapse v3, hence we limit the tutorial to just one
+simulator. From here onwards we refer to WebSnapse Reloaded as <span class='ecbx-1000'>WebSnapse</span>, for
+brevity.
+</p><!-- l. 92 --><p class='indent'>   The reader is recommended to follow the tutorial sections below by accessing the
+WebSnapse simulator directly using the following link: </p>
+<div class='center'>
+<!-- l. 93 --><p class='noindent'>
+</p><!-- l. 94 --><p class='noindent'><a class='url' href='https://websnapse.github.io/'><span class='ectt-1000'>https://websnapse.github.io/</span></a></p></div>
+<!-- l. 97 --><p class='indent'>   Simulation of a system in WebSnapse involves two main steps: (1) creating the
+system and (2) running the actual simulation of the system.
+</p><!-- l. 99 --><p class='noindent'>
+</p>
+   <h4 class='subsectionHead' id='creation'><span class='titlemark'>3.1   </span> <a id='x1-40003.1'></a>Creation</h4>
+<!-- l. 101 --><p class='noindent'>Creating a system can be done in two ways:
+</p><!-- l. 104 --><p class='indent'>
+     </p><dl class='enumerate'><dt class='enumerate'>
+  1. </dt><dd class='enumerate'>
+     <!-- l. 104 --><p class='noindent'>Importing  or  loading  an  existing  JSON  file  from  a  previous  use  of
+     WebSnapse: by simply using the <span class='ectt-1000'>Load </span>button, see Figure <a href='#-load-button-to-import-files'>10<!-- tex4ht:ref: fig:import_system  --></a>.
+     </p></dd><dt class='enumerate'>
+  2. </dt><dd class='enumerate'>
+     <!-- l. 106 --><p class='noindent'>Using  the  simulator’s  user  interface  to  add  neurons,  rules,  and  draw
+     synapses between these neurons: we describe these steps in more detail
+     below.
+</p>
+     </dd></dl>
+<!-- l. 110 --><p class='indent'>   We start by creating \(\Pi _{\ge 2}\) via WebSnapse’s user interface, first adding nodes and then
+drawing connections between these nodes.
+</p><!-- l. 112 --><p class='indent'>   Adding a node involves three steps:
+</p><!-- l. 115 --><p class='indent'>
+     </p><dl class='enumerate'><dt class='enumerate'>
+  1. </dt><dd class='enumerate'>
+     <!-- l. 115 --><p class='noindent'>Selecting the <span class='ectt-1000'>Node </span>tool by clicking it or using the keyboard shortcut <span class='ectt-1000'>N</span>
+     (Figure <a href='#-selecting-the-node-tool'>1<!-- tex4ht:ref: fig:node_tool  --></a>) </p><figure class='figure' id='-selecting-the-node-tool'> 
+<a id='x1-40041'></a> <img alt='PIC' src='images/node_tool.png' />
+<figcaption class='caption'><span class='id'>Figure 1: </span><span class='content'>Selecting the <span class='ectt-1000'>Node </span>tool.</span></figcaption><!-- tex4ht:label?: x1-40041  -->
+     </figure>
+                                                                  
+
+                                                                  
+     </dd><dt class='enumerate'>
+  2. </dt><dd class='enumerate'>
+     <!-- l. 121 --><p class='noindent'>Clicking anywhere in the canvas to place the node
+     </p></dd><dt class='enumerate'>
+  3. </dt><dd class='enumerate'>
+     <!-- l. 122 --><p class='noindent'>Indicating the node’s properties (<span class='ectt-1000'>ID</span>, <span class='ectt-1000'>Type</span>, <span class='ectt-1000'>Content</span>, and <span class='ectt-1000'>Rules</span>) (Figure  <a href='#-editing-the-new-nodes-properties'>2<!-- tex4ht:ref: fig:node_props  --></a> and
+     Figure  <a href='#-creating-a-node'>3<!-- tex4ht:ref: fig:node_created  --></a>): </p>
+         <ul class='itemize1'>
+         <li class='itemize'><span class='ectt-1000'>ID </span>is a unique identifier for the node, indicated using LaTeX (e.g.,
+         <span class='ectt-1000'>n_{1} </span>for  \(n_{1}\),  <span class='ectt-1000'>env_{out} </span>for  \(env_{out}\)).  We  recommend  giving  logical  or
+         conventional identifiers to nodes for clarity.
+         </li>
+         <li class='itemize'>
+         <!-- l. 125 --><p class='noindent'><span class='ectt-1000'>Type </span>is a convention used in WebSnapse: normally a neuron \(\sigma _{i}\) is indicated
+         as an input/output neuron via membership in \(in\)/\(out\), respectively. However, in
+         WebSnapse, \(\sigma _{i}\) is indicated as an input/output neuron via multiple steps:
+         </p>
+             <ul class='itemize2'>
+             <li class='itemize'>Setting \(\sigma _{i}\)’s type to <span class='ectt-1000'>regular </span>(<span class='ecbx-1000'>not </span><span class='ectt-1000'>input </span>or <span class='ectt-1000'>output</span>)
+             </li>
+             <li class='itemize'>Making a new neuron \(\sigma '_{i}\) and setting <span class='ecti-1000'>its </span>type to <span class='ectt-1000'>input</span>/<span class='ectt-1000'>output</span>
+             </li>
+             <li class='itemize'>Drawing a new synapse \(\sigma '_{i} \rightarrow \sigma _{i}\) (if \(\sigma _{i}\) is an input neuron) or \(\sigma _{i} \rightarrow \sigma '_{i}\) (if \(\sigma _{i}\) is an
+             output neuron)</li></ul>
+         </li>
+         <li class='itemize'>The spike count \(n_{i}\) and rule set \(R_{i}\) are indicated just like how the system is
+         defined. Each rule in \(R_{i}\) is typeset using LaTeX, that is, one types or writes
+         on the keyboard <span class='ectt-1000'>\rightarrow </span>or <span class='ectt-1000'>\to </span>for \(\rightarrow \) and <span class='ectt-1000'>\lambda </span>for \(\lambda \), among other
+         conventions.</li></ul>
+     <figure class='figure' id='-editing-the-new-nodes-properties'> 
+<a id='x1-40072'></a> <img alt='PIC' height='345' src='images/node_props.png' width='345' />
+<figcaption class='caption'><span class='id'>Figure 2: </span><span class='content'>Editing the new node’s properties.</span></figcaption><!-- tex4ht:label?: x1-40072  -->
+     </figure>
+     <figure class='figure' id='-creating-a-node'> 
+<a id='x1-40083'></a> <img alt='PIC' height='345' src='images/node_created.png' width='345' />
+<figcaption class='caption'><span class='id'>Figure 3: </span><span class='content'>Creating a node.</span></figcaption><!-- tex4ht:label?: x1-40083  -->
+     </figure>
+     </dd></dl>
+                                                                  
+
+                                                                  
+<!-- l. 145 --><p class='indent'>   Repeating these steps for each neuron allows us to draw \(\sigma _{1}, \sigma _{2}, \dots , \sigma _{n}\) on the canvas
+(Figure <a href='#-creating-all-nodes-of-'>4<!-- tex4ht:ref: fig:all_nodes_created  --></a>).
+</p>
+   <figure class='figure' id='-creating-all-nodes-of-'> 
+
+                                                                  
+
+                                                                  
+<a id='x1-40094'></a>
+                                                                  
+
+                                                                  
+<!-- l. 149 --><p class='noindent'><img alt='PIC' height='207' src='images/all_nodes_created.png' width='207' />
+</p>
+<figcaption class='caption'><span class='id'>Figure 4: </span><span class='content'>Creating all nodes of \(\Pi _{\ge 2}\).</span></figcaption><!-- tex4ht:label?: x1-40094  -->
+                                                                  
+
+                                                                  
+   </figure>
+<!-- l. 153 --><p class='indent'>   Adding a synapse involves three similar steps:
+     </p><dl class='enumerate'><dt class='enumerate'>
+  1. </dt><dd class='enumerate'>
+     <!-- l. 156 --><p class='noindent'>Selecting the <span class='ectt-1000'>Edge </span>tool by clicking it or using a <span class='ecti-1000'>keyboard shortcut</span>:
+     pressing the <span class='ectt-1000'>E </span>key on the keyboard as a shortcut (Figure <a href='#-selecting-the-edge-tool'>5<!-- tex4ht:ref: fig:select_edge  --></a>) </p><figure class='figure' id='-selecting-the-edge-tool'> 
+<a id='x1-40115'></a> <img alt='PIC' height='327' src='images/edge_tool.png' width='327' />
+<figcaption class='caption'><span class='id'>Figure 5: </span><span class='content'>Selecting the <span class='ectt-1000'>Edge </span>tool.</span></figcaption><!-- tex4ht:label?: x1-40115  -->
+     </figure>
+     </dd><dt class='enumerate'>
+  2. </dt><dd class='enumerate'>
+     <!-- l. 162 --><p class='noindent'>Drawing an arc from the synapse’s source node to the synapse’s target
+     node (Figure <a href='#-creating-a-synapse'>6<!-- tex4ht:ref: fig:edge_created  --></a>) </p><figure class='figure' id='-creating-a-synapse'> 
+<a id='x1-40136'></a> <img alt='PIC' height='138' src='images/edge_created.png' width='137' />
+<figcaption class='caption'><span class='id'>Figure 6: </span><span class='content'>Creating a synapse.</span></figcaption><!-- tex4ht:label?: x1-40136  -->
+     </figure>
+     </dd><dt class='enumerate'>
+  3. </dt><dd class='enumerate'>
+     <!-- l. 168 --><p class='noindent'>Indicating the synapse’s weight (if necessary; Figure  <a href='#-rightclicking-to-open-the-context-window'>7<!-- tex4ht:ref: fig:edge_context_window  --></a> and Figure  <a href='#-editing-the-edges-properties'>8<!-- tex4ht:ref: fig:edge_properties  --></a>):
+     </p>
+         <ul class='itemize1'>
+         <li class='itemize'>WebSnapse automatically creates a synapse with weight \(1\) after the
+         previous step. To edit the weight, one can right-click on the synapse to
+         make a context window pop up. Clicking <span class='ectt-1000'>Edit weight </span>makes editing
+         the synapse’s weight possible.</li></ul>
+     <figure class='figure' id='-rightclicking-to-open-the-context-window'> 
+<a id='x1-40157'></a> <img alt='PIC' height='138' src='images/edge_context_window.png' width='137' />
+<figcaption class='caption'><span class='id'>Figure 7: </span><span class='content'>Right-clicking to open the context window.</span></figcaption><!-- tex4ht:label?: x1-40157  -->
+     </figure>
+     <figure class='figure' id='-editing-the-edges-properties'> 
+<a id='x1-40168'></a> <img alt='PIC' height='207' src='images/edge_properties.png' width='207' />
+<figcaption class='caption'><span class='id'>Figure 8: </span><span class='content'>Editing the edge’s properties.</span></figcaption><!-- tex4ht:label?: x1-40168  -->
+     </figure>
+     </dd></dl>
+<!-- l. 184 --><p class='indent'>   Repeating these steps for each synapse allows us to draw \(syn\), and as a result \( \Pi _{\ge 2} \), on the
+canvas (Figure <a href='#-creating-all-edges-of-and-finishing-'>9<!-- tex4ht:ref: fig:all_edges_created  --></a>).
+</p>
+   <figure class='figure' id='-creating-all-edges-of-and-finishing-'> 
+
+                                                                  
+
+                                                                  
+<a id='x1-40179'></a>
+                                                                  
+
+                                                                  
+<!-- l. 188 --><p class='noindent'><img alt='PIC' height='207' src='images/all_edges_created.png' width='207' />
+</p>
+<figcaption class='caption'><span class='id'>Figure 9: </span><span class='content'>Creating all edges of \(\Pi _{\ge 2}\) (and finishing \( \Pi _{\ge 2} \)).</span></figcaption><!-- tex4ht:label?: x1-40179  -->
+                                                                  
+
+                                                                  
+   </figure>
+<!-- l. 192 --><p class='indent'>   Alternatively, one may create the system by importing a pre-existing JSON file.
+This is done by clicking on the <span class='obeylines-h'><span class='verb'><span class='ectt-1000'>W</span></span></span>-like icon at the top then clicking <span class='obeylines-h'><span class='verb'><span class='ectt-1000'>Load</span></span></span>
+(Figure <a href='#-load-button-to-import-files'>10<!-- tex4ht:ref: fig:import_system  --></a>).
+</p>
+   <figure class='figure' id='-load-button-to-import-files'> 
+
+                                                                  
+
+                                                                  
+<a id='x1-401810'></a>
+                                                                  
+
+                                                                  
+<!-- l. 196 --><p class='noindent'><img alt='PIC' height='207' src='images/import.png' width='207' />
+</p>
+<figcaption class='caption'><span class='id'>Figure 10: </span><span class='content'><span class='ectt-1000'>Load </span>button to import files.</span></figcaption><!-- tex4ht:label?: x1-401810  -->
+                                                                  
+
+                                                                  
+   </figure>
+   <h4 class='subsectionHead' id='simulation'><span class='titlemark'>3.2   </span> <a id='x1-50003.2'></a>Simulation</h4>
+<!-- l. 202 --><p class='noindent'>To simulate the system created, we simply click the play button at the bottom of the
+page. WebSnapse will then simulate each tick of the system, automatically selecting
+necessary rules and updating spike counts.
+</p><!-- l. 204 --><p class='indent'>   There are several things one may do to control the simulation (Figure <a href='#-simulation-controls'>11<!-- tex4ht:ref: fig:simulation_controls  --></a>):
+</p>
+   <figure class='figure' id='-simulation-controls'> 
+
+                                                                  
+
+                                                                  
+<a id='x1-500111'></a>
+                                                                  
+
+                                                                  
+<!-- l. 208 --><p class='noindent'><img alt='PIC' height='207' src='images/simulation_controls.png' width='207' />
+</p>
+<figcaption class='caption'><span class='id'>Figure 11: </span><span class='content'>Simulation controls.</span></figcaption><!-- tex4ht:label?: x1-500111  -->
+                                                                  
+
+                                                                  
+   </figure>
+     <ul class='itemize1'>
+     <li class='itemize'>One may click the icon with crossing arrows (leftmost icon) to toggle
+     between <span class='ecti-1000'>guided  </span>and <span class='ecti-1000'>pseudorandom </span>mode. In guided mode, whenever a
+     neuron is capable of activating more than one rule due to nondeterminism,
+     WebSnapse allows the user to decide which rule to activate. On the other
+     hand, in pseudorandom mode, this decision is left to WebSnapse; it will
+     activate one of these rules at pseudorandom.
+     </li>
+     <li class='itemize'>One may go <span class='ecti-1000'>one tick forwards </span>or <span class='ecti-1000'>one tick backwards </span>on the global clock of
+     the system by clicking the icons beside the play button. These icons will
+     have no effect if the user has not started the simulation (for the backward
+     button) or if the simulation has finished (for the forward button).
+     </li>
+     <li class='itemize'>One may click the icon with arrows in a cycle (rightmost icon) to reset
+     the simulation.</li></ul>
+<!-- l. 218 --><p class='indent'>   In addition to controlling the simulation and observing how the system behaves,
+the user may also open the <span class='ectt-1000'>History </span>menu using the rightmost icon on top
+(Figure <a href='#-history-button'>12<!-- tex4ht:ref: fig:history  --></a>). This will show the rules selected by standard neurons and the contents
+of input/output neurons at each time step (Figure <a href='#-decision-history-of-'>13<!-- tex4ht:ref: fig:history_window  --></a>).
+</p><!-- l. 220 --><p class='indent'>   In this way the <span class='ecti-1000'>output </span>of the computation can be taken in two ways: in a “visual”
+way by checking the contents of the neuron \(env_{out}\) for instance in Figure <a href='#-creating-all-edges-of-and-finishing-'>9<!-- tex4ht:ref: fig:all_edges_created  --></a>; in a “textual”
+way by looking at the column for \(env_{out}\) in the decision history (Figure <a href='#-decision-history-of-'>13<!-- tex4ht:ref: fig:history_window  --></a>. Recall at the
+start of Section <a href='#tutorial'>3<!-- tex4ht:ref: sec:tutor  --></a> that SN P system \(\Pi _{\geq 2}\) generates, in a nondeterministic way, the
+number set \(\{ k \mid k \in \mathbb {Z}, k \geq 2 \}\). In the Decision History from Figure <a href='#-decision-history-of-'>13<!-- tex4ht:ref: fig:history_window  --></a> we see that at time step (or row)
+3, in the column for \(env_{out}\) is the sequence \(10^21\) corresponding to the spike train for the output:
+the distance or interval between the two “1” symbols is 3, thus the output is
+\(3 \in \{ k \mid k \in \mathbb {Z}, k \geq 2 \}\).
+</p>
+   <figure class='figure' id='-history-button'> 
+
+                                                                  
+
+                                                                  
+<a id='x1-500212'></a>
+                                                                  
+
+                                                                  
+<!-- l. 226 --><p class='noindent'><img alt='PIC' height='207' src='images/history.png' width='207' />
+</p>
+<figcaption class='caption'><span class='id'>Figure 12: </span><span class='content'><span class='ectt-1000'>History </span>button.</span></figcaption><!-- tex4ht:label?: x1-500212  -->
+                                                                  
+
+                                                                  
+   </figure>
+   <figure class='figure' id='-decision-history-of-'> 
+
+                                                                  
+
+                                                                  
+<a id='x1-500313'></a>
+                                                                  
+
+                                                                  
+<!-- l. 232 --><p class='noindent'><img alt='PIC' height='207' src='images/history_window.png' width='207' />
+</p>
+<figcaption class='caption'><span class='id'>Figure 13: </span><span class='content'>Decision history of \( \Pi _{\ge 2} \).</span></figcaption><!-- tex4ht:label?: x1-500313  -->
+                                                                  
+
+                                                                  
+   </figure>
+   <h4 class='subsectionHead' id='editing'><span class='titlemark'>3.3   </span> <a id='x1-60003.3'></a>Editing</h4>
+<!-- l. 238 --><p class='noindent'>Suppose that instead of \(\Pi _{\ge 2}\), we wanted to create a <span class='ecti-1000'>greater-than-three, multiple-of-three
+</span><span class='ecti-1000'>generator </span>\(\Pi _{3k}\), an SN P system that generates the set \(\{3k \mid k \in \mathbb {Z}, k \ge 2\}\). The differences between \(\Pi _{\ge 2}\) and \(\Pi _{3k}\) are
+subtle; these differences are highlighted in Table <a href='#-differences-between-and-k'>1<!-- tex4ht:ref: table:system_comparison  --></a>.
+</p>
+   <div class='table'>
+                                                                  
+
+                                                                  
+<!-- l. 240 --><p class='indent' id='-differences-between-and-k'>   <a id='x1-60011'></a></p><figure class='float'>
+                                                                  
+
+                                                                  
+<div class='tabular'>
+ <table class='tabular' id='TBL-2'><colgroup id='TBL-2-1g'><col id='TBL-2-1' /><col id='TBL-2-2' /><col id='TBL-2-3' /></colgroup><tr id='TBL-2-1-' style='vertical-align:baseline;'><td class='td11' id='TBL-2-1-1' style='white-space:nowrap; text-align:center;'></td><td class='td11' id='TBL-2-1-2' style='white-space:nowrap; text-align:center;'>\(\Pi _{\ge 2}\)</td><td class='td11' id='TBL-2-1-3' style='white-space:nowrap; text-align:center;'>\(\Pi _{3k}\)</td>
+</tr><tr id='TBL-2-2-' style='vertical-align:baseline;'><td class='td11' id='TBL-2-2-1' style='white-space:nowrap; text-align:center;'>\(\sigma _{1}\)</td><td class='td11' id='TBL-2-2-2' style='white-space:nowrap; text-align:center;'>\((2, \{a^{2}/a \rightarrow a; \mathbf {0} \mid a \rightarrow \lambda \})\)</td><td class='td11' id='TBL-2-2-3' style='white-space:nowrap; text-align:center;'>\((2, \{a^{2}/a \rightarrow a; \mathbf {2} \mid a \rightarrow \lambda \})\)</td>
+</tr><tr id='TBL-2-3-' style='vertical-align:baseline;'><td class='td11' id='TBL-2-3-1' style='white-space:nowrap; text-align:center;'>\(\sigma _{2}\)</td><td class='td11' id='TBL-2-3-2' style='white-space:nowrap; text-align:center;'>\((1, \{a \rightarrow a; \mathbf {0} \mid a \rightarrow a; \mathbf {1}\})\)</td><td class='td11' id='TBL-2-3-3' style='white-space:nowrap; text-align:center;'>\((1, \{a \rightarrow a; \mathbf {2} \mid a \rightarrow a; \mathbf {3}\})\)</td>
+</tr><tr id='TBL-2-4-' style='vertical-align:baseline;'><td class='td11' id='TBL-2-4-1' style='white-space:nowrap; text-align:center;'>\(\sigma _{3}\)</td><td class='td11' id='TBL-2-4-2' style='white-space:nowrap; text-align:center;'>\((3, \{a^{3} \rightarrow a; 0 \mid a \rightarrow a; \mathbf {1} \mid a^{2} \rightarrow \lambda \})\)</td><td class='td11' id='TBL-2-4-3' style='white-space:nowrap; text-align:center;'>\((3, \{a^{3} \rightarrow a; 0 \mid a \rightarrow a; \mathbf {3} \mid a^{2} \rightarrow \lambda \})\)</td>
+</tr></table></div>
+<figcaption class='caption'><span class='id'>Table 1: </span><span class='content'>Differences between \(\Pi _{\ge 2}\) and \(\Pi _{3k}\).</span></figcaption><!-- tex4ht:label?: x1-60011  -->
+                                                                  
+
+                                                                  
+   </figure>
+   </div>
+<!-- l. 254 --><p class='indent'>   Editing a neuron’s contents is done by right-clicking the neuron to open a context
+window. Clicking the <span class='ectt-1000'>Edit node </span>option allows one to change a neuron’s spike count
+and rule set (Figure <a href='#-edit-node-option-in-neurons-context-window'>14<!-- tex4ht:ref: fig:neuron_context_window  --></a>).
+</p>
+   <figure class='figure' id='-edit-node-option-in-neurons-context-window'> 
+
+                                                                  
+
+                                                                  
+<a id='x1-600214'></a>
+                                                                  
+
+                                                                  
+<!-- l. 258 --><p class='noindent'><img alt='PIC' height='207' src='images/neuron_context_window.png' width='207' />
+</p>
+<figcaption class='caption'><span class='id'>Figure 14: </span><span class='content'><span class='ectt-1000'>Edit node </span>option in neuron’s context window.</span></figcaption><!-- tex4ht:label?: x1-600214  -->
+                                                                  
+
+                                                                  
+   </figure>
+<!-- l. 262 --><p class='indent'>   In this situation, only the node contents differ between the two systems. In case
+the synapses also need to be edited, the process is largely the same: one right-clicks
+the synapse to open a context window, then clicks the <span class='ectt-1000'>Edit weight </span>option to change
+the synapse’s weight.
+</p>
+   <h4 class='subsectionHead' id='extras'><span class='titlemark'>3.4   </span> <a id='x1-70003.4'></a>Extras</h4>
+<!-- l. 266 --><p class='noindent'>There are several quality-of-life features in WebSnapse that may help the user better
+understand the system or simulation they are working with. One such feature
+is the <span class='ectt-1000'>View </span>button on the bottom-left of the screen, which gives the user
+the option to hide the system’s rules, as shown in Figure <a href='#-view-button'>15<!-- tex4ht:ref: fig:view_button  --></a> and Figure
+ <a href='#-initial-state-of-with-only-neuron-spike-counts-shown'>16<!-- tex4ht:ref: fig:collapsed_system  --></a>.
+</p>
+   <figure class='figure' id='-view-button'> 
+
+                                                                  
+
+                                                                  
+<a id='x1-700115'></a>
+                                                                  
+
+                                                                  
+<!-- l. 270 --><p class='noindent'><img alt='PIC' height='207' src='images/view_button.png' width='207' />
+</p>
+<figcaption class='caption'><span class='id'>Figure 15: </span><span class='content'><span class='ectt-1000'>View </span>button.</span></figcaption><!-- tex4ht:label?: x1-700115  -->
+                                                                  
+
+                                                                  
+   </figure>
+   <figure class='figure' id='-initial-state-of-with-only-neuron-spike-counts-shown'> 
+
+                                                                  
+
+                                                                  
+<a id='x1-700216'></a>
+                                                                  
+
+                                                                  
+<!-- l. 276 --><p class='noindent'><img alt='PIC' height='207' src='images/collapsed_system.png' width='207' />
+</p>
+<figcaption class='caption'><span class='id'>Figure 16: </span><span class='content'>Initial state of \( \Pi _{\ge 2} \) with only neuron spike counts shown.</span></figcaption><!-- tex4ht:label?: x1-700216  -->
+                                                                  
+
+                                                                  
+   </figure>
+<!-- l. 280 --><p class='indent'>   This is especially helpful when it comes to larger systems with repeated rulesets,
+for which hiding the rules minimizes the visual clutter on the screen. For instance,
+the (non)uniform solutions to hard problems in <span class='cite'>[<a href='#Xleporati2009uniform'>12</a>]</span> or the homogeneous neurons in
+<span class='cite'>[<a href='#Xzeng2009homogsnp'>13</a>, <a href='#Xtristan_snphomog'>14</a>]</span>. In relation to this, the <span class='ecti-1000'>minimap </span>on the bottom-right of the screen
+(Figure <a href='#-minimap-of-'>17<!-- tex4ht:ref: fig:minimap  --></a>) gives the user a bird’s-eye view of the system, which may help with
+navigating large systems.
+</p>
+   <figure class='figure' id='-minimap-of-'> 
+
+                                                                  
+
+                                                                  
+<a id='x1-700317'></a>
+                                                                  
+
+                                                                  
+<!-- l. 286 --><p class='noindent'><img alt='PIC' height='207' src='images/minimap.png' width='207' />
+</p>
+<figcaption class='caption'><span class='id'>Figure 17: </span><span class='content'>Minimap of \( \Pi _{\ge 2} \).</span></figcaption><!-- tex4ht:label?: x1-700317  -->
+                                                                  
+
+                                                                  
+   </figure>
+<!-- l. 290 --><p class='indent'>   WebSnapse may be extended beyond system creation and simulation. For
+instance, one may incorporate a routine such as <span class='ecti-1000'>homogenization</span>, as discussed in <span class='cite'>[<a href='#Xzeng2009homogsnp'>13</a>]</span>.
+An implementation of the homogenisation algorithms in <span class='cite'>[<a href='#Xtristan_snphomog'>14</a>]</span> is the following: at least
+for the WebSnapse v2, work by <span class='cite'>[<a href='#Xtim_joshua'>15</a>]</span> allows homogenisation using a button click,
+so that a system \(\Pi \) may be converted to an equivalent homogeneous system
+\(\Pi '\).
+</p><!-- l. 293 --><p class='indent'>   Another possibility for SN P systems is to generate <span class='ecti-1000'>space-filling curves</span>, as
+discussed in <span class='cite'>[<a href='#Xmenina'>16</a>]</span> and <span class='cite'>[<a href='#Xangelica_denise'>17</a>]</span>, among others. The robustness of WebSnapse’s codebase
+makes relevant extensions and features straightforward.
+</p><!-- l. 295 --><p class='indent'>   Of course, a simulator is no good if it cannot <span class='ecti-1000'>correctly </span>simulate the systems it is
+given. In WebSnapse’s development, test cases and scripts were created in order to
+verify its correctness in both creation and simulation. These test cases found
+in <span class='cite'>[<a href='#Xwebsnapse_page'>4</a>]</span> may also serve as helpful samples for users new to SN P systems or
+WebSnapse.
+</p>
+   <h3 class='sectionHead' id='final-remarks'><span class='titlemark'>4   </span> <a id='x1-80004'></a>Final Remarks</h3>
+<!-- l. 299 --><p class='noindent'>This tutorial only scratches the surface of what can be done using both SN P systems
+and their simulators, but understanding the basic operations and options is
+fundamental to creating and simulating more complex systems. The user-friendly
+interface and codebase flexibility of <span class='ecbx-1000'>WebSnapse (Reloaded or CS) </span>empower
+the user to perform these creations and simulations with ease, and to add
+extensions or new features to the simulator as they see fit. By making good use of
+simulators such as WebSnapse, researchers are equipped with more guidance and
+confidence towards exploring the world of SN P systems and P systems in
+general.
+</p><!-- l. 320 --><p class='indent'>   Another way to represent SN P systems and related models is the formal
+framework from <span class='cite'>[<a href='#Xformfram_snp2020'>18</a>, <a href='#Xverlan2022_snpff_tutor'>19</a>]</span> which we hope to support in WebSnapse. Further directions
+and extensions for WebSnapse, with related theories and tools, are provided in <span class='cite'>[<a href='#Xfrancis_acmc2022jour'>20</a>]</span>
+which is a revised and extended version of <span class='cite'>[<a href='#Xfrancis_acmc2022'>21</a>]</span>. Since not only the WebSnapse
+applications but also their source codes are available in the WebSnapse page in <span class='cite'>[<a href='#Xwebsnapse_page'>4</a>]</span>,
+our hope is that more people can use, extend, or improve WebSnapse for their own
+research. Our group is open to collaborations!
+</p><!-- l. 325 --><p class='noindent'>
+</p>
+   <h3 class='likesectionHead' id='acknowledgements'><a id='x1-90004'></a>Acknowledgements</h3>
+<!-- l. 328 --><p class='noindent'>Support for F.G.C. Cabarle: the Dean Ruben A. Garcia PCA, and Project No.
+222211 ORG from the Office of the Vice Chancellor for Research and Development,
+both from UP Diliman; the <span class='ecti-1000'>QUAL21 008 USE </span>project (PAIDI 2020 and FEDER
+2014-2020 funds). The authors are also thankful to Prof. Gexiang Zhang for
+                                                                  
+
+                                                                  
+suggesting this tutorial, and to the IMCS Bulletin for allowing us to share our
+work.
+</p><!-- l. 1 --><p class='noindent'>
+</p>
+   <h3 class='likesectionHead' id='references'><a id='x1-100004'></a>References</h3>
+<!-- l. 1 --><p class='noindent'>
+    </p><div class='thebibliography'>
+    <p class='bibitem'><span class='biblabel'>
+  [1]<span class='bibsp'>   </span></span><a id='XSnapse'></a>A. D. C. Fernandez, R. M. Fresco, F. G. C. Cabarle, R. T. A. de la
+    Cruz,  I. C. H.  Macababayao,  K. J.  Ballesteros,  and  H. N.  Adorna,
+    “Snapse: A visual tool for spiking neural P systems,”  <span class='ecti-1000'>Processes</span>, vol. 9,
+    no. 1, 2021.
+    </p>
+    <p class='bibitem'><span class='biblabel'>
+  [2]<span class='bibsp'>   </span></span><a id='Xdupaya2022web'></a>A. G. S.  Dupaya,  A. C.  A. P.  Galano,  F. G. C.  Cabarle,  R. T.
+    De La Cruz, K. J. Ballesteros, and P. P. L. Lazo, “A web-based visual
+    simulator for spiking neural P systems,” <span class='ecti-1000'>Journal of Membrane Computing</span>,
+    vol. 4, no. 1, pp. 21–40, 2022.
+    </p>
+    <p class='bibitem'><span class='biblabel'>
+  [3]<span class='bibsp'>   </span></span><a id='Xwebnsnapse_v2'></a>N. Cruel,   C. Quirim,   and   F. G. C.   Cabarle,   “Websnapse   v2.0:
+    Enhancing and extending the visual and web-based simulator of spiking
+    neural P systems,”  in <span class='ecti-1000'>Pre-proceedings of the 11th Asian Conference on
+    </span><span class='ecti-1000'>Membrane Computing, Quezon City, Philippines</span>, pp. 146–166, September
+    2022.
+    </p>
+    <p class='bibitem'><span class='biblabel'>
+  [4]<span class='bibsp'>   </span></span><a id='Xwebsnapse_page'></a>“Websnapse                               page,”                               2023.
+    <a class='url' href='https://aclab.dcs.upd.edu.ph/productions/software/websnapse'><span class='ectt-1000'>https://aclab.dcs.upd.edu.ph/productions/software/websnapse</span></a>.
+    </p>
+    <p class='bibitem'><span class='biblabel'>
+  [5]<span class='bibsp'>   </span></span><a id='Xwebsnapse_tutor2023'></a>D. Ko,   F. G. C.   Cabarle,   and   R. T.   De L Cruz,   “<span class='eccc1000-'><span class='small-caps'>W</span></span>ebSnapse
+    Tutorial: A Hands-On Approach for Web and Visual Simulations of Spiking
+    Neural P Systems,” in <span class='ecti-1000'>(submitted) Bulletin of the International Membrane
+    </span><span class='ecti-1000'>Computing Society</span>.
+    </p>
+                                                                  
+
+                                                                  
+    <p class='bibitem'><span class='biblabel'>
+  [6]<span class='bibsp'>   </span></span><a id='Xsnp'></a>M. Ionescu, Gh. Păun, and T. Yokomori, “Spiking neural P systems,”
+    <span class='ecti-1000'>Fundamenta informaticae</span>, vol. 71, no. 2, 3, pp. 279–308, 2006.
+    </p>
+    <p class='bibitem'><span class='biblabel'>
+  [7]<span class='bibsp'>   </span></span><a id='Xmem-hand'></a>  Gh.  Păun,  G. Rozenberg,  and  A. Salomaa,  eds.,  <span class='ecti-1000'>The  Oxford
+    </span><span class='ecti-1000'>Handbook of Membrane Computing</span>. Oxford Univeristy Press, 2010.
+    </p>
+    <p class='bibitem'><span class='biblabel'>
+  [8]<span class='bibsp'>   </span></span><a id='Xpaun2007snptutor'></a>Gh. Păun, “Spiking neural P systems: A tutorial,” <span class='ecti-1000'>Bull. Eur. Assoc.
+    </span><span class='ecti-1000'>Theor. Comput. Sci.</span>, vol. 91, pp. 145–159, Feb 2007.
+    </p>
+    <p class='bibitem'><span class='biblabel'>
+  [9]<span class='bibsp'>   </span></span><a id='Xleporati2022snpsurv'></a>A. Leporati, G. Mauri, and C. Zandron, “Spiking neural P systems:
+    main ideas and results,” <span class='ecti-1000'>Natural Computing</span>, pp. 1–21, 2022.
+    </p>
+    <p class='bibitem'><span class='biblabel'>
+ [10]<span class='bibsp'>   </span></span><a id='Xwebsnapse-v3'></a>L. Gallos,   J. L.   Sotto,   F. G. C.   Cabarle,   and   H. N.   Adorna,
+    “Websnapse  v3:  Optimization  of  the  web-based  simulator  of  spiking
+    neural  p  system  using  matrix  representation,  webassembly  and  other
+    tools,” in <span class='ecti-1000'>Pre-proc. 12th Workshop on Computation: Theory and Practice
+    </span><span class='ecti-1000'>(WCTP2023),  4  to  6  December  2023,  Chitose-city,  Hokkaido,  Japan</span>
+    (S. Hagihara, S. ya Nishizaki, M. Numao, J. Caro, and M. T. Suarez,
+    eds.), pp. 492–510, 2023.
+    </p>
+    <p class='bibitem'><span class='biblabel'>
+ [11]<span class='bibsp'>   </span></span><a id='Xgulapa2023reloaded'></a>M. Gulapa, J. S. Luzada, F. G. C. Cabarle, H. Adorna, K. Buño,
+    and                                                                                   D. Ko,
+    “Websnapse reloaded: The next-generation spiking neural p system visual
+    simulator using client-server architecture,” in <span class='ecti-1000'>Pre-proc. 12th Workshop on
+    </span><span class='ecti-1000'>Computation: Theory and Practice (WCTP2023), 4 to 6 December 2023,
+    </span><span class='ecti-1000'>Chitose-city, Hokkaido, Japan </span>(S. Hagihara, S. ya Nishizaki, M. Numao,
+    J. Caro, and M. T. Suarez, eds.), pp. 511–536, 2023.
+    </p>
+    <p class='bibitem'><span class='biblabel'>
+ [12]<span class='bibsp'>   </span></span><a id='Xleporati2009uniform'></a>A. Leporati,           G. Mauri,           C. Zandron,           G. Păun,
+    and M. J. Pérez-Jiménez, “Uniform solutions to sat and subset sum by
+    spiking neural P systems,” <span class='ecti-1000'>Natural computing</span>, vol. 8, no. 4, pp. 681–702,
+    2009.
+                                                                  
+
+                                                                  
+    </p>
+    <p class='bibitem'><span class='biblabel'>
+ [13]<span class='bibsp'>   </span></span><a id='Xzeng2009homogsnp'></a>X. Zeng,  X. Zhang,  and  L. Pan,  “Homogeneous  spiking  neural  P
+    systems,” <span class='ecti-1000'>Fundamenta Informaticae</span>, vol. 97, no. 1-2, pp. 275–294, 2009.
+    </p>
+    <p class='bibitem'><span class='biblabel'>
+ [14]<span class='bibsp'>   </span></span><a id='Xtristan_snphomog'></a>R. T. A. de la Cruz, F. G. C. Cabarle, and H. N. Adorna, “Steps
+    toward  a  homogenization  procedure  for  spiking  neural  p  systems,”
+    <span class='ecti-1000'>Theoretical Computer Science</span>, vol. 981, p. 114250, 2024.
+    </p>
+    <p class='bibitem'><span class='biblabel'>
+ [15]<span class='bibsp'>   </span></span><a id='Xtim_joshua'></a>T. Llanto,  J. Amador,  F. G. C.  Cabarle,  R. T.  De L Cruz,  and
+    D. Ko, “<span class='eccc1000-'><span class='small-caps'>A</span></span>nalyses and Implementation of a Homogenisation Algorithm for
+    Spiking Neural P Systems in the WebSnapse Tool,” in <span class='ecti-1000'>(submitted) Bulletin
+    </span><span class='ecti-1000'>of the International Membrane Computing Society</span>.
+    </p>
+    <p class='bibitem'><span class='biblabel'>
+ [16]<span class='bibsp'>   </span></span><a id='Xmenina'></a>J. M.   Menina,   “Spiking   neural   p   systems   in   generating   finite
+    approximations  of  hilbert  and  sierpiński  curves.”   CS  199  Report,
+    Department of Computer Science, University of the Philippines Diliman,
+    2022.
+    </p>
+    <p class='bibitem'><span class='biblabel'>
+ [17]<span class='bibsp'>   </span></span><a id='Xangelica_denise'></a>A. Basista and D. Caloracan, “Generating approximations of the peano
+    curve using an sn p system and an extension of websnapse.” CS 199 Report,
+    Department of Computer Science, University of the Philippines Diliman,
+    2022.
+    </p>
+    <p class='bibitem'><span class='biblabel'>
+ [18]<span class='bibsp'>   </span></span><a id='Xformfram_snp2020'></a>S. Verlan, R. Freund, A. Alhazov, S. Ivanov, and L. Pan, “A formal
+    framework for spiking neural p systems,” <span class='ecti-1000'>Journal of Membrane Computing</span>,
+    vol. 2, no. 4, pp. 355–368, 2020.
+    </p>
+    <p class='bibitem'><span class='biblabel'>
+ [19]<span class='bibsp'>   </span></span><a id='Xverlan2022_snpff_tutor'></a>S. Verlan  and  G. Zhang,  “A  tutorial  on  the  formal  framework  for
+    spiking neural P systems,” <span class='ecti-1000'>Natural Computing</span>, pp. 1–14, 2022.
+    </p>
+    <p class='bibitem'><span class='biblabel'>
+ [20]<span class='bibsp'>   </span></span><a id='Xfrancis_acmc2022jour'></a>F. G. C. Cabarle, “<span class='eccc1000-'><span class='small-caps'>T</span></span>hinking About Spiking Neural P Systems: Some
+    Theories, Tools, and Research Topics,” <span class='ecti-1000'>(submitted)</span>.
+                                                                  
+
+                                                                  
+    </p>
+    <p class='bibitem'><span class='biblabel'>
+ [21]<span class='bibsp'>   </span></span><a id='Xfrancis_acmc2022'></a>F. G. C. Cabarle, “Some thoughts on notions and tools for investigating
+    SN P systems (extended abstract),” in <span class='ecti-1000'>Pre-proceedings of the 11th Asian
+    </span><span class='ecti-1000'>Conference on Membrane Computing, Quezon City, Philippines</span>, pp. 1–4,
+    September 2022.
+</p>
+    </div>
+    
+</body> 
+</html>
